@@ -3,27 +3,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class Organictable extends JFrame {
 
     private FilePanel filepanel;
     private ButtonGroup group;
-    private Connection databaseConnection;
 
     public static void main(String[] args) {
         new Organictable();
-        new FastaFile("C:\\Users\\dnAJ\\Dropbox\\dnAJ\\Novel Enzymes\\A_clavatus_NRRL_1_orf_trans_all.fasta");
     }
 
     public Organictable() {
-//        try {
-//            databaseConnection = DriverManager.getConnection("jdbc:mysql://croil.net?user=");
-//        }catch (SQLException e) {
-//
-//        } // FIXME: 26-Apr-16
         this.setSize(600,300);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,9 +107,10 @@ public class Organictable extends JFrame {
             String ac = getFilepanel().getSelectedRadioButtonActionCommand();
             if (Objects.equals(ac, "fasta")) {
                 // todo open fasta file and parse it
+                // new FastaFile();
             }if (Objects.equals(ac, "orthomcl")) {
                 // todo open orthomcl file and parse it
-                new OrthologFile();
+//                new OrthologFile();
             }if (Objects.equals(ac, "wolfpsort")) {
                 // todo open wolfpsort file and parse it
             }if (Objects.equals(ac, "signalp")) {
