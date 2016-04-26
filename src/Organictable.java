@@ -18,11 +18,11 @@ public class Organictable extends JFrame {
     }
 
     public Organictable() {
-        try {
-            databaseConnection = DriverManager.getConnection("jdbc:mysql://croil.net?user=");
-        }catch (SQLException e) {
-
-        }
+//        try {
+//            databaseConnection = DriverManager.getConnection("jdbc:mysql://croil.net?user=");
+//        }catch (SQLException e) {
+//
+//        } // FIXME: 26-Apr-16 
         this.setSize(600,300);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

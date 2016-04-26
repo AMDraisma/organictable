@@ -13,7 +13,7 @@
 import java.io.*;
 
 
-public class FastaFile { fixmde
+public class FastaFile {
 
 
     private String path;
