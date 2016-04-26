@@ -9,6 +9,12 @@ import java.io.File;
  */
 public class FileParser extends JFrame {
 
+    OTDatabase database;
+
+    public FileParser(OTDatabase database) {
+        this.database = database;
+    }
+
     // neemt de beschrijving van de bestanden welke worden geparsed en de extensies als argumenten
     // geeft een bestand terug welke de gebruiker heeft geselecteerd in een open bestand dialoog
     public File OpenFile(String description, String extension) {
