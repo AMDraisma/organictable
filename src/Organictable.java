@@ -19,6 +19,7 @@ public class Organictable extends JFrame {
         this.setSize(600,300);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         filepanel = new FilePanel();
         this.setContentPane(filepanel);
         this.pack();
