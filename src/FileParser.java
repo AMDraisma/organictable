@@ -32,9 +32,9 @@ public class FileParser extends JFrame {
 
         // het argument van showopendialog is een jframe, zoals het hoofdscherm. hebben we niet nodig.
         // de integer welke de filechooser teruggeeft zegt iets over wat de gebruiker heeft gedaan
-        int returnvalue = filechooser.showOpenDialog(null);
+        int returnconfue = filechooser.showOpenDialog(null);
         // filechooser geeft APPROVE_OPTION terug als het selecteren goed is gegaan
-        if (returnvalue == JFileChooser.APPROVE_OPTION) {
+        if (returnconfue == JFileChooser.APPROVE_OPTION) {
             System.out.println(filechooser.getSelectedFile().getName());
             return filechooser.getSelectedFile();
         }else{

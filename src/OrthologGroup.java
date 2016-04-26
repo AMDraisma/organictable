@@ -5,8 +5,8 @@ import java.util.ArrayList;
  * Klasse voor orthologe groepen met proteine behorende aan species
  */
 public class OrthologGroup {
-    private String id;      // id van groep, in ons geval 8asp
-    private int nr;         // nummer van groep, in ons geval het oplopende getal vanaf 1000
+    private String id;      // id van groep, in ons geconf 8asp
+    private int nr;         // nummer van groep, in ons geconf het oplopende getal vanaf 1000
     // dit zijn dus de id_nr in onze groups.txt bestanden (8asp_1000)
 
     // een arraylist van een string array.
