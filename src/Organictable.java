@@ -8,12 +8,14 @@ public class Organictable extends JFrame {
 
     private FilePanel filepanel;
     private ButtonGroup group;
+    private OTDatabase otDatabase;
 
     public static void main(String[] args) {
         new Organictable();
     }
 
     public Organictable() {
+        otDatabase = new OTDatabase();
         this.setSize(600,300);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,6 +26,10 @@ public class Organictable extends JFrame {
 
     public FilePanel getFilepanel() {
         return filepanel;
+    }
+
+    public OTDatabase getDatabase () {
+        return otDatabase;
     }
 
     private class FilePanel extends JPanel {
@@ -107,10 +113,10 @@ public class Organictable extends JFrame {
             String ac = getFilepanel().getSelectedRadioButtonActionCommand();
             if (Objects.equals(ac, "fasta")) {
                 // todo open fasta file and parse it
-                // new FastaFile();
+                new FastaFile(otDatabase);
             }if (Objects.equals(ac, "orthomcl")) {
                 // todo open orthomcl file and parse it
-//                new OrthologFile();
+                new OrthologFile(otDatabase);
             }if (Objects.equals(ac, "wolfpsort")) {
                 // todo open wolfpsort file and parse it
             }if (Objects.equals(ac, "signalp")) {
