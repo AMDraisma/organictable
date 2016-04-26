@@ -14,7 +14,8 @@ public class OrthologFile extends FileParser {
     ArrayList<OrthologGroup> orthologGroups;
     OrthologFileActionListener orthologFileActionListener = new OrthologFileActionListener();
 
-    public OrthologFile() {
+    public OrthologFile(OTDatabase database) {
+        super(database);
         file = OpenFile("OrthoMCL groups file", "txt");
         orthologGroups = new ArrayList<OrthologGroup>();
         if (null != file) {
@@ -74,7 +75,7 @@ public class OrthologFile extends FileParser {
                     // en voegen we elke proteine van elke species in de groep toe aan het object
                     group.addOrthologGroup(elements[i].split("|"));
                 }
-                System.out.println(group.toString());
+//                System.out.println(group.toString());
 //                break;
             }
         } catch (IOException e) {
