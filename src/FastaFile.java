@@ -16,8 +16,7 @@ import java.util.ArrayList;
 
 public class FastaFile extends FileParser {
 
-    public ArrayList<String> proteinList = new ArrayList();
-    private String File_Name ;
+    public ArrayList<String> proteinList = new ArrayList<String>();
 
     public ArrayList<String> getProteins(){
         return proteinList;
@@ -37,8 +36,7 @@ public class FastaFile extends FileParser {
         FileReader file_to_read = new FileReader(file);
         BufferedReader bf = new BufferedReader(file_to_read);
 
-        String aLine = "x";
-        StringReader sr = new StringReader(aLine);
+        String aLine;
 
         while ( (aLine = bf.readLine() ) != null ) {
             if ( aLine.startsWith( ">" ) ){
