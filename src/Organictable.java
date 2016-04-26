@@ -15,6 +15,7 @@ public class Organictable extends JFrame {
 
     public static void main(String[] args) {
         new Organictable();
+        new FastaFile("C:\\Games\\test.fasta");
     }
 
     public Organictable() {
@@ -22,7 +23,7 @@ public class Organictable extends JFrame {
 //            databaseConnection = DriverManager.getConnection("jdbc:mysql://croil.net?user=");
 //        }catch (SQLException e) {
 //
-//        } // FIXME: 26-Apr-16 
+//        } // FIXME: 26-Apr-16
         this.setSize(600,300);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
