@@ -44,7 +44,6 @@ public class FastaFile {
             if ( aLine.startsWith( ">" ) ){
                 String pr = aLine.substring( aLine.indexOf( ">" ) +1 , aLine.indexOf( " " ));
                 proteinList.add(pr);
-                System.out.println(proteinList);
             }
         }
         bf.close();

@@ -15,7 +15,7 @@ public class Organictable extends JFrame {
 
     public static void main(String[] args) {
         new Organictable();
-        new FastaFile("C:\\Games\\test.fasta");
+        new FastaFile("C:\\Users\\dnAJ\\Dropbox\\dnAJ\\Novel Enzymes\\A_clavatus_NRRL_1_orf_trans_all.fasta");
     }
 
     public Organictable() {
