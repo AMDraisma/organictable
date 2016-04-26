@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -29,5 +30,15 @@ public class OrthologGroup {
     @Override
     public String toString() {
         return "Ortholog group "+id+"_"+nr+", size: "+proteins.size()+" proteins";
+    }
+
+    public String[][] getSet() {
+        String[][] set = new String[proteins.size()][3];
+        for (int i = 0; i < proteins.size(); i++) {
+            set[i][0] = ""+id;
+            set[i][1] = proteins.get(i)[0];
+            set[i][2] = proteins.get(i)[1];
+        }
+        return set;
     }
 }
