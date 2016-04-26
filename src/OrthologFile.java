@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -8,7 +12,7 @@ import java.util.Objects;
 public class OrthologFile extends FileParser {
     File file;
     ArrayList<OrthologGroup> orthologGroups;
-
+    OrthologFileActionListener orthologFileActionListener = new OrthologFileActionListener();
 
     public OrthologFile() {
         file = OpenFile("OrthoMCL groups file", "txt");
@@ -16,6 +20,34 @@ public class OrthologFile extends FileParser {
         if (null != file) {
             parse(file);
         }
+        this.setSize(400, 300);
+        this.setVisible(true);
+        this.setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+        JScrollPane jScrollPane = new JScrollPane();
+        c.weighty = 0.8f;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        c.gridheight = 1;
+        this.add(jScrollPane, c);
+
+        c.weighty = 0.2f;
+
+        JButton dbButton = new JButton("Insert into database");
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        this.add(dbButton, c);
+
+        JButton cancelButton = new JButton("Cancel");
+        c.gridx = 1;
+        c.gridy = 1;
+        cancelButton.setActionCommand("Cancel");
+        cancelButton.addActionListener(orthologFileActionListener);
+        this.add(cancelButton, c);
     }
 
     private void parse(File file) {
@@ -87,5 +119,13 @@ public class OrthologFile extends FileParser {
 
     public ArrayList<OrthologGroup> getOrthologGroups () {
         return orthologGroups;
+    }
+
+    private class OrthologFileActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+
+        }
     }
 }

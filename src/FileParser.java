@@ -7,7 +7,7 @@ import java.io.File;
  * hierin komen algemene functies die we voor alle soorten bestanden kunnen gebruiken
  * voornamelijk het openen van bestanden is van belang hier
  */
-public class FileParser {
+public class FileParser extends JFrame {
 
     // neemt de beschrijving van de bestanden welke worden geparsed en de extensies als argumenten
     // geeft een bestand terug welke de gebruiker heeft geselecteerd in een open bestand dialoog
@@ -35,4 +35,6 @@ public class FileParser {
             return null;
         }
     }
+
+
 }
