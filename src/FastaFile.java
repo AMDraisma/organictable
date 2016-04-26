@@ -14,19 +14,19 @@ import java.io.*;
 import java.util.ArrayList;
 
 
-public class FastaFile {
+public class FastaFile extends FileParser {
 
-    public ArrayList proteinList = new ArrayList();
+    public ArrayList<String> proteinList = new ArrayList();
     private String File_Name ;
 
     public ArrayList<String> getProteins(){
         return proteinList;
     }
 
-    FastaFile( String file_name ){
-        File_Name = file_name;
+    FastaFile( OTDatabase database ){
+        super(database);
         try {
-            parseFile( new File(File_Name) );
+            parseFile( OpenFile("Fasta file", "fa") );
         } catch (IOException e) {
             e.printStackTrace();
         }
