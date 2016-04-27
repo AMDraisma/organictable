@@ -1,23 +1,23 @@
+/**
+ * Created by dnAJ on 27-Apr-16.
+ */
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
-/**
- * Created by dnAJ on 26-Apr-16.
- */
-public class SignalP_Out extends FileParser {
+public class Hmmer_Out extends FileParser {
     public ArrayList<signalP> signalList;
 
 //    public java.util.ArrayList<String> getSignal(){
 //        return finalSigpArray();
 //    }
 
-    SignalP_Out( OTDatabase database){
+    Hmmer_Out( OTDatabase database){
         super( database );
         this.signalList = new ArrayList<signalP>();
         try {
-            parseFile( OpenFile( "FileName.short_out", "short_out") );
+            parseFile( OpenFile( "Hmmer output", " ") );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,3 +59,4 @@ public class SignalP_Out extends FileParser {
     }
 
 }
+

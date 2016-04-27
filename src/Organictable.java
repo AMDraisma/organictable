@@ -121,9 +121,9 @@ public class Organictable extends JFrame {
             }if (Objects.equals(ac, "wolfpsort")) {
                 // todo open wolfpsort file and parse it
             }if (Objects.equals(ac, "signalp")) {
-                new SignalP_Out( otDatabase );
-                // todo open signalp file and parse it
+                new SignalP_Out(otDatabase);
             }if (Objects.equals(ac, "hmmer")) {
+                new Hmmer_Out(otDatabase);
                 // todo open hmmer file and parse it
             }
         }
