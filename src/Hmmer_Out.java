@@ -5,8 +5,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static jdk.nashorn.internal.parser.TokenType.OR;
-
 
 public class Hmmer_Out extends FileParser {
     public ArrayList<Hammer_Pfam_Storage> pfamList;

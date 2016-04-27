@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +24,6 @@ public class CSV {
                 System.out.print("Can't write file");
                 return;
             }
-
         }
     }
 
@@ -39,22 +39,30 @@ public class CSV {
                 "join Signalp on Prot.protaccession = Signalp.protaccession ";
 
         ResultSet rs = database.ExecuteQuery(q);
-        if (null != rs) {
-            try {
-                int c = rs.getMetaData().getColumnCount();
-                StringBuilder sb;
-                while (rs.next()) {
-                    sb = new StringBuilder();
-                    for (int i = 1; i <= c; i++) {
-                        sb.append(rs.getString(i));
-                        sb.append(',');
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(file);
+            if (null != rs) {
+                try {
+                    int c = rs.getMetaData().getColumnCount();
+                    StringBuilder sb;
+                    while (rs.next()) {
+                        sb = new StringBuilder();
+                        for (int i = 1; i <= c; i++) {
+                            sb.append(rs.getString(i));
+                            sb.append(',');
+                        }
+                        sb.deleteCharAt(sb.length() - 1);
+                        sb.append("\n");
+                        fw.write(sb.toString());
+//                        System.out.println(sb.toString());
                     }
-                    sb.deleteCharAt(sb.length() - 1);
-                    System.out.println(sb.toString());
-                }
-            } catch (SQLException e) {
+                } catch (SQLException e) {
 
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
