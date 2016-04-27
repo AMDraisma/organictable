@@ -9,15 +9,21 @@ import java.util.Arrays;
 public class SignalP_Out extends FileParser {
     public ArrayList<signalP> signalList;
 
-//    public java.util.ArrayList<String> getSignal(){
-//        return finalSigpArray();
-//    }
-
     SignalP_Out( OTDatabase database){
         super( database );
         this.signalList = new ArrayList<signalP>();
         try {
-            parseFile( OpenFile( "file.short_out", new String[]{"short_out"}) );
+            parseFile( OpenFile( "short signalp output", null) );
+            database.insertIntoDatabase(
+                    "Signalp",
+                    finalSigpArray(),
+                    new OTDatabase.DATA_TYPES[]{
+                            OTDatabase.DATA_TYPES.DATA_TYPE_STRING,
+                            OTDatabase.DATA_TYPES.DATA_TYPE_STRING,
+                            OTDatabase.DATA_TYPES.DATA_TYPE_STRING,
+                    }
+            );
+            System.out.println("Done");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,7 +38,7 @@ public class SignalP_Out extends FileParser {
         //extracts protein accession, signal boolean and d-score from signalp short_output file
         while ( (aLine = bf.readLine() ) != null ) {
             if ( aLine.startsWith( "#" ) != true ) {
-                String prot = aLine.substring(0, aLine.indexOf(" ") - 1);
+                String prot = aLine.substring(aLine.indexOf("|")+1, aLine.indexOf(" "));
 
                 String[] sig =  aLine.split( "[^N\"Y]" );
                 String sigp = Arrays.toString(sig).substring( Arrays.toString(sig).length() -2, Arrays.toString(sig).length() -1);

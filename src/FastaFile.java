@@ -25,7 +25,7 @@ public class FastaFile extends FileParser {
 
     public ArrayList<String> proteinList = new ArrayList<String>();
     FastaFileActionListener fastaFileActionListener = new FastaFileActionListener();
-    JTextField orgaccessionField;
+    String filename;
 
     public ArrayList<String> getProteins(){
         return proteinList;
@@ -36,6 +36,8 @@ public class FastaFile extends FileParser {
         String[] extensions =  {"fa", "fasta"};
         File file = OpenFile("Fasta file", extensions);
         if (null != file) {
+            filename = file.getName();
+            System.out.println(filename);
             parseFile( file );
 
             this.setSize(400, 300);
@@ -43,24 +45,14 @@ public class FastaFile extends FileParser {
             this.setLayout(new GridBagLayout());
 
             GridBagConstraints c = new GridBagConstraints();
+
             JScrollPane jScrollPane = new JScrollPane();
-            c.weighty = 0.1f;
-            c.weightx = 1;
-            c.gridwidth = 1;
+            c.gridwidth = 2;
             c.gridheight = 1;
+            c.weighty = 0.8f;
+            c.weightx = 1;
+            c.gridx = 0;
             c.gridy = 0;
-
-            c.gridx = 0;
-            this.add(new JLabel("Organism accession ID:"), c);
-
-            c.gridx = 1;
-            orgaccessionField = new JTextField(10);
-            this.add(orgaccessionField, c);
-
-
-            c.weighty = 0.7f;
-            c.gridx = 0;
-            c.gridy = 1;
             this.add(jScrollPane, c);
 
             c.weighty = 0.2f;
@@ -68,14 +60,14 @@ public class FastaFile extends FileParser {
             JButton dbButton = new JButton("Insert into database");
             c.gridwidth = 1;
             c.gridx = 0;
-            c.gridy = 2;
+            c.gridy = 1;
             dbButton.setActionCommand("insert");
             dbButton.addActionListener(fastaFileActionListener);
             this.add(dbButton, c);
 
             JButton cancelButton = new JButton("Cancel");
             c.gridx = 1;
-            c.gridy = 2;
+            c.gridy = 1;
             cancelButton.setActionCommand("cancel");
             cancelButton.addActionListener(fastaFileActionListener);
             this.add(cancelButton, c);
@@ -129,22 +121,19 @@ public class FastaFile extends FileParser {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+            String orgaccession;
             if (Objects.equals(actionEvent.getActionCommand(), "insert")) {
-                String orgaccessionfieldtext = orgaccessionField.getText();
-                if (orgaccessionfieldtext.length() > 0) {
-                    try {
-                        ResultSet r = database.ExecuteQuery(
-                                "SELECT COUNT(*) FROM Organism WHERE orgaccession = '"+orgaccessionfieldtext+"'"
-                        );
-
-                        int i = r.getInt(1);
-                        System.out.println(i+"");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
+                try {
+                    ResultSet r = database.ExecuteQuery(
+                            "SELECT orgaccession FROM Organism WHERE filename = '"+filename+"'"
+                    );
+                    r.next();
+                    orgaccession = r.getString(1);
                     database.insertIntoDatabase("Prot", getSet());
-                    database.insertIntoDatabase("Organism_has_prot", getSet(orgaccessionfieldtext));
+                    database.insertIntoDatabase("Organism_has_prot", getSet(orgaccession));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
             if (Objects.equals(actionEvent.getActionCommand(), "cancel")) {
                 cancel();

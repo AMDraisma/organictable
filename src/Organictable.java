@@ -89,11 +89,21 @@ public class Organictable extends JFrame {
 
             JButton openButton = new JButton("Open file");
             openButton.addActionListener(filepanelhandler);
+            openButton.setActionCommand("open");
             c.gridwidth=3;
             c.gridheight=1;
             c.gridx=0;
             c.gridy=2;
             this.add(openButton, c);
+
+            JButton csvButton = new JButton("Generate CSV");
+            openButton.addActionListener(filepanelhandler);
+            openButton.setActionCommand("csv");
+            c.gridwidth=3;
+            c.gridheight=1;
+            c.gridx=0;
+            c.gridy=3;
+            this.add(csvButton, c);
 
             group = new ButtonGroup();
             group.add(fastaButton);
@@ -111,20 +121,29 @@ public class Organictable extends JFrame {
     class FilePanelHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            String ac = getFilepanel().getSelectedRadioButtonActionCommand();
-            if (Objects.equals(ac, "fasta")) {
-                // todo open fasta file and parse it
-                new FastaFile(otDatabase);
-            }if (Objects.equals(ac, "orthomcl")) {
-                // todo open orthomcl file and parse it
-                new OrthologFile(otDatabase);
-            }if (Objects.equals(ac, "wolfpsort")) {
-                // todo open wolfpsort file and parse it
-            }if (Objects.equals(ac, "signalp")) {
-                new SignalP_Out(otDatabase);
-            }if (Objects.equals(ac, "hmmer")) {
-                new Hmmer_Out(otDatabase);
-                // todo open hmmer file and parse it
+            if (actionEvent.getActionCommand() == "open") {
+                String ac = getFilepanel().getSelectedRadioButtonActionCommand();
+                if (Objects.equals(ac, "fasta")) {
+                    // todo open fasta file and parse it
+                    new FastaFile(otDatabase);
+                }
+                if (Objects.equals(ac, "orthomcl")) {
+                    // todo open orthomcl file and parse it
+                    new OrthologFile(otDatabase);
+                }
+                if (Objects.equals(ac, "wolfpsort")) {
+                    // todo open wolfpsort file and parse it
+                }
+                if (Objects.equals(ac, "signalp")) {
+                    new SignalP_Out(otDatabase);
+                }
+                if (Objects.equals(ac, "hmmer")) {
+                    new Hmmer_Out(otDatabase);
+                    // todo open hmmer file and parse it
+                }
+            }
+            if (actionEvent.getActionCommand() == "csv") {
+                new CSV(otDatabase);
             }
         }
     }
