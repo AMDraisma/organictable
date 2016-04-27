@@ -2,14 +2,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static jdk.nashorn.internal.parser.TokenType.OR;
 
 /**
  * Created by dnAJ on 26-Apr-16.
  */
 public class SignalP_Out extends FileParser {
     public ArrayList<signalP> signalList;
-    private String File_Name;
 
 //    public java.util.ArrayList<String> getSignal(){
 //        return signalList;
@@ -42,10 +40,22 @@ public class SignalP_Out extends FileParser {
                 String[] conf = aLine.split( "\\s[N|Y]\\s.*" );
                 String confi = Arrays.toString(conf).substring( Arrays.toString(conf).length() -6, Arrays.toString(conf).length() -1 );
 
-                signalP s = new signalP( prot, sigp, confi);
+                signalP s = new signalP(prot, sigp, confi);
                 signalList.add(s);
             }
         }
         bf.close();
+
+        finalSigpArray();
     }
+
+    public String[][] finalSigpArray(){
+        String[][] finalsigpArray = new String[signalList.size()][];
+        int i;
+        for( i = 0 ; i < signalList.size(); i++ ){
+            finalsigpArray[i] =  signalList.get(i).convertToArray();
+        }
+        return finalsigpArray;
+    }
+
 }

@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+
 /**
  * Created by dnAJ on 26-Apr-16.
  */
@@ -10,5 +12,14 @@ public class signalP {
         this.prot = prot;
         this.sig = sig;
         this.conf = conf;
+    }
+
+    String[] convertToArray(){
+        String[] contentsSigP = new String[3];
+        contentsSigP[0] = prot;
+        contentsSigP[1] = sig;
+        contentsSigP[2] = conf;
+
+        return contentsSigP;
     }
 }
