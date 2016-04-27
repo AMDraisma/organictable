@@ -35,6 +35,7 @@ public class OTDatabase {
         ResultSet r = null;
         try {
             Statement s = databaseConnection.createStatement();
+            s.setFetchSize(50);
             r = s.executeQuery(q);
         }catch (SQLException e) {
             // handle any errors

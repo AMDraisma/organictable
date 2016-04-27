@@ -97,8 +97,8 @@ public class Organictable extends JFrame {
             this.add(openButton, c);
 
             JButton csvButton = new JButton("Generate CSV");
-            openButton.addActionListener(filepanelhandler);
-            openButton.setActionCommand("csv");
+            csvButton.addActionListener(filepanelhandler);
+            csvButton.setActionCommand("csv");
             c.gridwidth=3;
             c.gridheight=1;
             c.gridx=0;
@@ -121,7 +121,7 @@ public class Organictable extends JFrame {
     class FilePanelHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            if (actionEvent.getActionCommand() == "open") {
+            if (Objects.equals(actionEvent.getActionCommand(), "open")) {
                 String ac = getFilepanel().getSelectedRadioButtonActionCommand();
                 if (Objects.equals(ac, "fasta")) {
                     // todo open fasta file and parse it
@@ -142,7 +142,7 @@ public class Organictable extends JFrame {
                     // todo open hmmer file and parse it
                 }
             }
-            if (actionEvent.getActionCommand() == "csv") {
+            if (Objects.equals(actionEvent.getActionCommand(), "csv")) {
                 new CSV(otDatabase);
             }
         }
