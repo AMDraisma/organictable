@@ -41,4 +41,8 @@ public class OrthologGroup {
         }
         return set;
     }
+
+    public ArrayList<String[]> getGroupData() {
+        return proteins;
+    }
 }

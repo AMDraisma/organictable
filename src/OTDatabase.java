@@ -7,17 +7,18 @@ public class OTDatabase {
 
     Connection databaseConnection;
 
-//    public OTDatabase() {
-//        try {
-//            databaseConnection = DriverManager.getConnection(
-//                    "jdbc:mysql://croil.net:3306/novelenzymes",
-//                    "dnaj",
-//                    ""
-//            );
-//        }catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public OTDatabase() {
+        try {
+            // who needs security
+            databaseConnection = DriverManager.getConnection(
+                    "jdbc:mysql://croil.net:3306/novelenzymes",
+                    "dnaj",
+                    "1234" // same as my root password
+            );
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Connection getDatabaseConnection () {
         return databaseConnection;
@@ -51,11 +52,12 @@ public class OTDatabase {
                     values.append(value);
                     values.append(",");
                 }
-                values.deleteCharAt(values.length()-1);
                 q = String.format("INSERT INTO %s VALUES (%s);", table, values.toString());
+                values.deleteCharAt(values.length()-1);
                 s.addBatch(q);
+                System.out.println(q);
+                values = new StringBuilder();
             }
-            System.out.println(s.toString());
         }catch (SQLException e) {
             // handle any errors
             System.out.println("SQLException: " + e.getMessage());

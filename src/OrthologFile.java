@@ -41,6 +41,8 @@ public class OrthologFile extends FileParser {
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 1;
+        dbButton.setActionCommand("insert");
+        dbButton.addActionListener(orthologFileActionListener);
         this.add(dbButton, c);
 
         JButton cancelButton = new JButton("Cancel");
@@ -73,10 +75,10 @@ public class OrthologFile extends FileParser {
                 // door i te laten beginnen op 1 slaan we het eerste element over (de info van de orthologe groep)
                 for (int i = 1; i < elements.length; i++) {
                     // en voegen we elke proteine van elke species in de groep toe aan het object
-                    group.addOrthologGroup(elements[i].split("|"));
+                    group.addOrthologGroup(elements[i].split("\\|"));
                 }
-//                System.out.println(group.toString());
-//                break;
+                orthologGroups.add(group);
+                break;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,7 +128,9 @@ public class OrthologFile extends FileParser {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-
+            if (Objects.equals(actionEvent.getActionCommand(), "insert")) {
+                database.insertIntoDatabase("Cluster", orthologGroups.get(0).getSet());
+            }
         }
     }
 }
