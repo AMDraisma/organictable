@@ -7,17 +7,17 @@ public class OTDatabase {
 
     Connection databaseConnection;
 
-    public OTDatabase() {
-        try {
-            databaseConnection = DriverManager.getConnection(
-                    "jdbc:mysql://croil.net:3306/novelenzymes",
-                    "dnaj",
-                    ""
-            );
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    public OTDatabase() {
+//        try {
+//            databaseConnection = DriverManager.getConnection(
+//                    "jdbc:mysql://croil.net:3306/novelenzymes",
+//                    "dnaj",
+//                    ""
+//            );
+//        }catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public Connection getDatabaseConnection () {
         return databaseConnection;
