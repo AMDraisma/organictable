@@ -17,7 +17,7 @@ public class SignalP_Out extends FileParser {
         super( database );
         this.signalList = new ArrayList<signalP>();
         try {
-            parseFile( OpenFile( "FileName.short_out", "short_out") );
+            parseFile( OpenFile( "file.short_out", new String[]{"short_out"}) );
         } catch (IOException e) {
             e.printStackTrace();
         }

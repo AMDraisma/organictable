@@ -16,41 +16,44 @@ public class OrthologFile extends FileParser {
 
     public OrthologFile(OTDatabase database) {
         super(database);
-        file = OpenFile("OrthoMCL groups file", "txt");
+        file = OpenFile("OrthoMCL groups file", new String[]{"txt"});
         orthologGroups = new ArrayList<OrthologGroup>();
         if (null != file) {
             parse(file);
+
+            this.setSize(400, 300);
+            this.setVisible(true);
+            this.setLayout(new GridBagLayout());
+
+            GridBagConstraints c = new GridBagConstraints();
+            JScrollPane jScrollPane = new JScrollPane();
+            c.weighty = 0.8f;
+            c.weightx = 1;
+            c.gridx = 0;
+            c.gridy = 0;
+            c.gridwidth = 2;
+            c.gridheight = 1;
+            this.add(jScrollPane, c);
+
+            c.weighty = 0.2f;
+
+            JButton dbButton = new JButton("Insert into database");
+            c.gridwidth = 1;
+            c.gridx = 0;
+            c.gridy = 1;
+            dbButton.setActionCommand("insert");
+            dbButton.addActionListener(orthologFileActionListener);
+            this.add(dbButton, c);
+
+            JButton cancelButton = new JButton("Cancel");
+            c.gridx = 1;
+            c.gridy = 1;
+            cancelButton.setActionCommand("cancel");
+            cancelButton.addActionListener(orthologFileActionListener);
+            this.add(cancelButton, c);
+        }else{
+            cancel();
         }
-        this.setSize(400, 300);
-        this.setVisible(true);
-        this.setLayout(new GridBagLayout());
-
-        GridBagConstraints c = new GridBagConstraints();
-        JScrollPane jScrollPane = new JScrollPane();
-        c.weighty = 0.8f;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        this.add(jScrollPane, c);
-
-        c.weighty = 0.2f;
-
-        JButton dbButton = new JButton("Insert into database");
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 1;
-        dbButton.setActionCommand("insert");
-        dbButton.addActionListener(orthologFileActionListener);
-        this.add(dbButton, c);
-
-        JButton cancelButton = new JButton("Cancel");
-        c.gridx = 1;
-        c.gridy = 1;
-        cancelButton.setActionCommand("Cancel");
-        cancelButton.addActionListener(orthologFileActionListener);
-        this.add(cancelButton, c);
     }
 
     private void parse(File file) {
@@ -78,7 +81,7 @@ public class OrthologFile extends FileParser {
                     group.addOrthologGroup(elements[i].split("\\|"));
                 }
                 orthologGroups.add(group);
-                break;
+//                break;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,6 +123,11 @@ public class OrthologFile extends FileParser {
         return null;
     }
 
+    public void cancel() {
+        orthologGroups.clear();
+        dispose();
+    }
+
     public ArrayList<OrthologGroup> getOrthologGroups () {
         return orthologGroups;
     }
@@ -129,7 +137,12 @@ public class OrthologFile extends FileParser {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             if (Objects.equals(actionEvent.getActionCommand(), "insert")) {
-                database.insertIntoDatabase("Cluster", orthologGroups.get(0).getSet());
+                for (OrthologGroup group : orthologGroups) {
+                    database.insertIntoDatabase("Cluster", group.getSet());
+                }
+            }
+            if (Objects.equals(actionEvent.getActionCommand(), "cancel")) {
+                cancel();
             }
         }
     }

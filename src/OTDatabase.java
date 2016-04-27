@@ -52,12 +52,15 @@ public class OTDatabase {
                     values.append(value);
                     values.append(",");
                 }
-                q = String.format("INSERT INTO %s VALUES (%s);", table, values.toString());
                 values.deleteCharAt(values.length()-1);
-                s.addBatch(q);
-                System.out.println(q);
+                q = String.format("INSERT INTO %s VALUES (%s);", table, values.toString());
+                s.execute(q);
+//                System.out.println(q);
                 values = new StringBuilder();
             }
+            databaseConnection.commit();
+//            s.executeBatch();
+
         }catch (SQLException e) {
             // handle any errors
             System.out.println("SQLException: " + e.getMessage());

@@ -35,7 +35,7 @@ public class OrthologGroup {
     public String[][] getSet() {
         String[][] set = new String[proteins.size()][3];
         for (int i = 0; i < proteins.size(); i++) {
-            set[i][0] = ""+id;
+            set[i][0] = ""+nr;
             set[i][1] = proteins.get(i)[0];
             set[i][2] = proteins.get(i)[1];
         }

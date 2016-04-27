@@ -17,18 +17,23 @@ public class FileParser extends JFrame {
 
     // neemt de beschrijving van de bestanden welke worden geparsed en de extensies als argumenten
     // geeft een bestand terug welke de gebruiker heeft geselecteerd in een open bestand dialoog
-    public File OpenFile(String description, String extension) {
+    public File OpenFile(String description, String[] extensions) {
         // de filechooser class is een klasse welke een open file window kan oproepen
         JFileChooser filechooser = new JFileChooser();
 
         // zorg ervoor dat alleen bestanden, geen folders kunnen worden geselecteerd
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        // we filteren op bestanden met de extensie welke is doorgegeven aan de constructor
-        filechooser.setFileFilter(new FileNameExtensionFilter(description, extension));
+        // zorg ervoor dat alleen .extensie bestanden kunnen worden geselecteerd als er een extensie is gedefinieerd
+        if (extensions != null) {
+            filechooser.setAcceptAllFileFilterUsed(false);
+            // we filteren op bestanden met de extensie welke is doorgegeven aan de constructor
+            filechooser.setFileFilter(new FileNameExtensionFilter(description, extensions));
+        }else{
+            filechooser.setAcceptAllFileFilterUsed(true);
+        }
 
-        // zorg ervoor dat alleen .extensie bestanden kunnen worden geselecteerd
-        filechooser.setAcceptAllFileFilterUsed(false);
+
 
         // het argument van showopendialog is een jframe, zoals het hoofdscherm. hebben we niet nodig.
         // de integer welke de filechooser teruggeeft zegt iets over wat de gebruiker heeft gedaan

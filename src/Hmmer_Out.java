@@ -17,7 +17,7 @@ public class Hmmer_Out extends FileParser {
         super( database );
         this.signalList = new ArrayList<signalP>();
         try {
-            parseFile( OpenFile( "Hmmer output", " ") );
+            parseFile( OpenFile( "Hmmer output", null) );
         } catch (IOException e) {
             e.printStackTrace();
         }
