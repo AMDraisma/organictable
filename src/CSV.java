@@ -32,11 +32,14 @@ public class CSV {
                 "Organism_has_prot.orgaccession, " +
                 "Cluster.id, " +
                 "Signalp.sig, " +
-                "Signalp.conf " +
+                "Signalp.conf, " +
+                "Hmmer.pfam, " +
+                "Hmmer.pfamext " +
                 "FROM Prot " +
                 "join Organism_has_prot on Prot.protaccession = Organism_has_prot.protaccession " +
                 "join Cluster on Prot.protaccession = Cluster.protaccession " +
-                "join Signalp on Prot.protaccession = Signalp.protaccession ";
+                "join Signalp on Prot.protaccession = Signalp.protaccession " +
+                "join Hmmer on Prot.protaccession = Hmmer.protaccession ";
 
         ResultSet rs = database.ExecuteQuery(q);
         FileWriter fw = null;
@@ -46,6 +49,7 @@ public class CSV {
                 try {
                     int c = rs.getMetaData().getColumnCount();
                     StringBuilder sb;
+                    fw.write("Protein, Organism, Ortholog group ID, SignalP sig, SignalP conf, Pfam-A family, Pfam-A family description\n"); // TODO: make csv have dynamic column headers
                     while (rs.next()) {
                         sb = new StringBuilder();
                         for (int i = 1; i <= c; i++) {
@@ -57,6 +61,7 @@ public class CSV {
                         fw.write(sb.toString());
 //                        System.out.println(sb.toString());
                     }
+                    System.out.println("Done");
                 } catch (SQLException e) {
 
                 }
