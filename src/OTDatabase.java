@@ -88,9 +88,11 @@ public class OTDatabase {
                 }
                 s.addBatch();
             }
+            System.out.println("Inserting "+s.getUpdateCount()+" rows");
             s.clearParameters();
             s.executeBatch();
             databaseConnection.commit();
+            System.out.println("Done");
 
         }catch (SQLException e) {
             // handle any errors
