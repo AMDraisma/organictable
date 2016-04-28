@@ -4,6 +4,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 
 public class Hmmer_Out extends FileParser {
@@ -18,6 +19,7 @@ public class Hmmer_Out extends FileParser {
         this.pfamList = new ArrayList<Hammer_Pfam_Storage>();
         try {
             parseFile( OpenFile( "Hmmer output", null) );
+            database.insertIntoDatabase("Hmmer", finalPfamArray(), null, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,27 +31,36 @@ public class Hmmer_Out extends FileParser {
         BufferedReader bf = new BufferedReader(file_to_read);
 
         String aLine, anotherLine, alotOfLines;
+        String prot=null, pfam=null, pfamext=null;
         //extracts protein accession en protein family van pfam output file
         while ( ( aLine = bf.readLine() ) != null ) {
-            if ( aLine.startsWith( "//" ) == true ) {
-                while ( ( alotOfLines = bf.readLine() ).startsWith( "#" ) != true ) {
-                    String prot=null, pfam=null, pfamext=null;
-                    if( alotOfLines.startsWith("Query:") == true ){
+            if ( aLine.startsWith( "//" )) {
+                while ( !( alotOfLines = bf.readLine() ).startsWith( "#" ) ) {
+                    // output houdt hiermee op
+                    if (Objects.equals(alotOfLines, "[ok]")) {
+                        break;
+                    }
+                    if( alotOfLines.startsWith("Query:") ){
                         prot = alotOfLines.substring( alotOfLines.indexOf("|") +1, alotOfLines.indexOf("[") -2);
                     }
-                    if ( alotOfLines.startsWith(" ") == true ){
+                    if ( alotOfLines.startsWith(" ") ){
                         String[] fam =  alotOfLines.split( "[\\s]{2,}" );
                         if ( !fam[1].startsWith("-")&&!fam[1].startsWith("E")&&!fam[1].startsWith("#")) {
                             String[] questionorexcl = fam[1].split("\\s");
                             if (questionorexcl.length == 1) {
-                                pfam = fam[9];
-                                pfamext = fam[10];
+                                if (fam.length == 11) {
+                                    pfam = fam[9];
+                                    pfamext = fam[10];
+                                    // heb dit hiernaartie gemoved, er moet voor elke unieke combinatie proteine en
+                                    // pfam een pfam storage worden gemaakt en ingevoerd
+                                    Hammer_Pfam_Storage h = new Hammer_Pfam_Storage(prot, pfam, pfamext);
+                                    pfamList.add(h);
+                                }
                             }
                         }
                     }
 
-                Hammer_Pfam_Storage h = new Hammer_Pfam_Storage(prot, pfam, pfamext);
-                pfamList.add(h);
+
 
                 }
             }
