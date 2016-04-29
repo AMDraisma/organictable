@@ -3,16 +3,11 @@
  */
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 
 public class Hmmer_Out extends FileParser {
     public ArrayList<Hammer_Pfam_Storage> pfamList;
-
-//    public java.util.ArrayList<String> getSignal(){
-//        return finalSigpArray();
-//    }
 
     Hmmer_Out( OTDatabase database){
         super( database );
@@ -30,7 +25,7 @@ public class Hmmer_Out extends FileParser {
         FileReader file_to_read = new FileReader(file);
         BufferedReader bf = new BufferedReader(file_to_read);
 
-        String aLine, anotherLine, alotOfLines;
+        String aLine, alotOfLines;
         String prot=null, pfam=null, pfamext=null;
         //extracts protein accession en protein family van pfam output file
         while ( ( aLine = bf.readLine() ) != null ) {

@@ -34,12 +34,13 @@ public class CSV {
                 "Signalp.sig, " +
                 "Signalp.conf, " +
                 "Hmmer.pfam, " +
-                "Hmmer.pfamext " +
+                "GROUP_CONCAT(Hmmer.pfamext SEPARATOR ' : ')" +
                 "FROM Prot " +
                 "join Organism_has_prot on Prot.protaccession = Organism_has_prot.protaccession " +
                 "join Cluster on Prot.protaccession = Cluster.protaccession " +
                 "join Signalp on Prot.protaccession = Signalp.protaccession " +
-                "join Hmmer on Prot.protaccession = Hmmer.protaccession ";
+                "join Hmmer on Prot.protaccession = Hmmer.protaccession " +
+                "GROUP BY Organism_has_prot.orgaccession";
 
         ResultSet rs = database.ExecuteQuery(q);
         FileWriter fw = null;
@@ -54,7 +55,7 @@ public class CSV {
                         sb = new StringBuilder();
                         for (int i = 1; i <= c; i++) {
                             sb.append(rs.getString(i));
-                            sb.append(',');
+                            sb.append('\t');
                         }
                         sb.deleteCharAt(sb.length() - 1);
                         sb.append("\n");
