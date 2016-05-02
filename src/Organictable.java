@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class Organictable extends JFrame {
+public class   Organictable extends JFrame {
 
     private FilePanel filepanel;
     private ButtonGroup group;
