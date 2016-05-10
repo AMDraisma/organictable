@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 
 public class CSV {
@@ -44,6 +43,7 @@ public class CSV {
         String prot;
         CSVRow row;
         HashMap<String, CSVRow> map = new HashMap<>();
+        int proteins = 0;
         if (null != rs) {
             try {
                 int c = rs.getMetaData().getColumnCount();
@@ -51,10 +51,11 @@ public class CSV {
                     prot = rs.getString(1);
                     row = new CSVRow(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
                     map.put(prot, row);
+                    proteins++;
                 }
-                System.out.println("Done, found "+map.size()+" protein entries with PFAM enties");
+                System.out.println("Found "+proteins+" proteins");
             } catch (SQLException e) {
-
+                e.printStackTrace();
             }
         }
         q = "SELECT Prot.protaccession, " +
@@ -75,21 +76,45 @@ public class CSV {
                         if (null != row & null != invrow) {
                             row.addOrth(orth);
                             invrow.addOrth(prot);
-//                            invrow.addOrth(orth);
                         }
                     }
                 }
-                System.out.println("Done, found "+map.size()+" ortholog group bindings");
+                System.out.println("Done processing ortholog groups");
             } catch (SQLException e) {
-
+                e.printStackTrace();
+            }
+        }
+        q = "SELECT protaccession, " +
+                "substrate, " +
+                "expression" +
+                "from ExpressionA ";
+        rs = database.ExecuteQuery(q);
+        if (null != rs) {
+            try {
+                int c = rs.getMetaData().getColumnCount();
+                System.out.println(String.format("Found %d expression values", c));
+                while (rs.next()) {
+                    prot = rs.getString(1);
+                    row = map.get(prot);
+                    row.addExpr(rs.getString(2), Double.parseDouble(rs.getString(3)));
+                }
+                System.out.println("Done inserting expression values");
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
         try {
+            int t = proteins / 10;
+            int i = 0;
             FileWriter fw = new FileWriter(file);
             fw.write(CSVRow.header); // TODO: make csv have dynamic column headers
             for (CSVRow r : map.values()) {
                 fw.write(r.toString());
+                i++;
+                if (i % t == 0)
+                    System.out.println(String.format("Wrote %d lines", i));
             }
+            System.out.println("Done");
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();

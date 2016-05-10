@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class CSVRow {
@@ -18,9 +17,18 @@ public class CSVRow {
             "SignalP sig\t" +
             "SignalP conf\t" +
             "Pfam-A family\t" +
-            "Pfam-A family description\n";
+            "Pfam-A family description\t" +
+            "Glucose\t" +
+            "Xylose\t" +
+            "Glycerol\t" +
+            "Sucrose\t" +
+            "Xylan\t" +
+            "Cellulose\t" +
+            "Rice straw\t" +
+            "Wheat straw\t" +
+            "Avicel\n";
 
-    static class organism {
+    static class Organism {
         public static final int A_clavatus_NRRL_1 = 0;
         public static final int A_flavus_NRRL_3357 = 1;
         public static final int A_fumigatus_A1163 = 2;
@@ -32,6 +40,41 @@ public class CSVRow {
         public static final int N_fischeri_NRRL_181 = 8;
     }
 
+    // TODO: this entire thing would look nicer with enums
+    static class Substrate {
+        public static final int Glucose = 0;
+        public static final int Xylose = 1;
+        public static final int Glycerol = 2;
+        public static final int Sucrose = 3;
+        public static final int Xylan = 4;
+        public static final int Cellulose = 5;
+        public static final int Ricestraw = 6;
+        public static final int Wheatstraw = 7;
+        public static final int Avicel = 8;
+
+        public static int parseString(String s) {
+            if (s == "Glucose")
+                return Glucose;
+            if (s == "Xylose")
+                return Xylose;
+            if (s == "Glycerol")
+                return Glycerol;
+            if (s == "Sucrose")
+                return Sucrose;
+            if (s == "Xylan")
+                return Xylan;
+            if (s == "Cellulose")
+                return Cellulose;
+            if (s.toLowerCase().contains("rice"))
+                return Ricestraw;
+            if (s.toLowerCase().contains("wheat"))
+                return Wheatstraw;
+            if (s == "Avicel")
+                return Avicel;
+            return -1;
+        }
+    }
+
     private String protaccession;
     private String orgaccession;
     private ArrayList<ArrayList<String>> orths;
@@ -39,11 +82,9 @@ public class CSVRow {
     private String conf;
     private String pfam;
     private String pfamext;
+    private ArrayList<ArrayList<Double>> exprs;
 
     public CSVRow(String protaccession, String orgaccession, String sig, String conf, String pfam, String pfamext) {
-
-
-
         this.protaccession = protaccession;
         this.orgaccession = orgaccession;
         this.sig = sig;
@@ -54,6 +95,18 @@ public class CSVRow {
         for (int i = 0; i < 9; i++) {
             this.orths.add(new ArrayList<String>());
         }
+        exprs = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            this.exprs.add(new ArrayList<Double>());
+        }
+    }
+
+    public void addExpr(int substrate, Double value) {
+        exprs.get(substrate).add(value);
+    }
+
+    public void addExpr(String substrate, Double value) {
+        addExpr(Substrate.parseString(substrate), value);
     }
 
     public void addOrth(int orth, String protaccession) {
@@ -62,31 +115,31 @@ public class CSVRow {
 
     public void addOrth(String orth) {
         if (orth.startsWith("ACLA")) {
-            addOrth(organism.A_clavatus_NRRL_1, orth);
+            addOrth(Organism.A_clavatus_NRRL_1, orth);
         }
         if (orth.startsWith("AFL2T")) {
-            addOrth(organism.A_flavus_NRRL_3357, orth);
+            addOrth(Organism.A_flavus_NRRL_3357, orth);
         }
         if (orth.startsWith("AFUB")) {
-            addOrth(organism.A_fumigatus_A1163, orth);
+            addOrth(Organism.A_fumigatus_A1163, orth);
         }
         if (orth.startsWith("AN")) {
-            addOrth(organism.A_nidulans_FGSC_A4, orth);
+            addOrth(Organism.A_nidulans_FGSC_A4, orth);
         }
         if (orth.endsWith("-mRNA")) {
-            addOrth(organism.A_niger_ATCC_1015, orth);
+            addOrth(Organism.A_niger_ATCC_1015, orth);
         }
         if (orth.startsWith("An")) {
-            addOrth(organism.A_niger_CBS_513_88, orth);
+            addOrth(Organism.A_niger_CBS_513_88, orth);
         }
         if (orth.startsWith("AO")) {
-            addOrth(organism.A_oryzae_RIB40, orth);
+            addOrth(Organism.A_oryzae_RIB40, orth);
         }
         if (orth.startsWith("ATET")) {
-            addOrth(organism.A_terreus_NIH2624, orth);
+            addOrth(Organism.A_terreus_NIH2624, orth);
         }
         if (orth.startsWith("NFIA")) {
-            addOrth(organism.N_fischeri_NRRL_181, orth);
+            addOrth(Organism.N_fischeri_NRRL_181, orth);
         }
     }
 
@@ -111,8 +164,29 @@ public class CSVRow {
         return sb.toString();
     }
 
+    public String getExprs() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 9; i++) {
+            if (this.exprs.get(i).size() > 0) {
+                for (Double value : this.exprs.get(i)) {
+                    sb.append(exprs.get(i).toString());
+                    sb.append(", ");
+                }
+            }else{
+                sb.append("NA");
+            }
+            if (sb.length() > 0 && sb.charAt(sb.length()-1) == ',') {
+                sb.deleteCharAt(sb.length() - 1);
+            }
+            sb.append("\t");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+
+        return sb.toString();
+    }
+
     @Override
     public String toString () {
-        return protaccession+"\t"+orgaccession+"\t"+getOrths()+"\t"+sig+"\t"+conf+"\t"+pfam+"\t"+pfamext+"\n";
+        return protaccession+"\t"+orgaccession+"\t"+getOrths()+"\t"+sig+"\t"+conf+"\t"+pfam+"\t"+pfamext+"\t"+getExprs()+"\n";
     }
 }
