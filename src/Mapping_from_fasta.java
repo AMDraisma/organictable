@@ -18,7 +18,7 @@ public class Mapping_from_fasta {
             String aLine;
             String protAcc;
             String probeID;
-            String newLine;
+//            String newLine;
             String[][] map = null;
 
 
