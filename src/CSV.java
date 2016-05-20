@@ -36,10 +36,12 @@ public class CSV {
                 "GROUP_CONCAT(Hmmer.pfamext SEPARATOR ', ')" +
                 "FROM Prot " +
                 "join Organism_has_prot on Prot.protaccession = Organism_has_prot.protaccession " +
-                "join Signalp on Prot.protaccession = Signalp.protaccession " +
+                "join (Select * from Signalp where sig = \"Y\") as Signalp on Prot.protaccession = Signalp.protaccession " +
                 "join Hmmer on Prot.protaccession = Hmmer.protaccession " +
                 "GROUP BY protaccession";
         ResultSet rs = database.ExecuteQuery(q);
+        String org;
+        int oint;
         String prot;
         CSVRow row;
         HashMap<String, CSVRow> map = new HashMap<>();
@@ -84,22 +86,59 @@ public class CSV {
                 e.printStackTrace();
             }
         }
-        q = "SELECT protaccession, " +
-                "substrate, " +
-                "expression" +
-                "from ExpressionA ";
+        q = "SELECT orgaccession, protaccession, substrate, expression from Expression;";
         rs = database.ExecuteQuery(q);
+
         if (null != rs) {
             try {
+                FileWriter asdf = new FileWriter(new File("/home/crude/asd.txt"));
                 int c = rs.getMetaData().getColumnCount();
-                System.out.println(String.format("Found %d expression values", c));
+//                System.out.println(String.format("Found %d expression values", c));
                 while (rs.next()) {
-                    prot = rs.getString(1);
-                    row = map.get(prot);
-                    row.addExpr(rs.getString(2), Double.parseDouble(rs.getString(3)));
+                    org = rs.getString(1);
+                    prot = rs.getString(2);
+                    oint = CSVRow.Organism.parseString(org);
+                    switch (oint) {
+                        case CSVRow.Organism.A_nidulans_FGSC_A4:
+                            if (prot.startsWith("AN")) {
+                                if (prot.endsWith("_at")) {
+                                    prot = prot.substring(0, prot.length() - 3);
+                                }
+                                if (prot.endsWith(".3")) {
+                                    prot = prot.substring(0, prot.length() - 2);
+                                }
+                            }else{
+                                prot = null;
+                            }
+                            break;
+                        case CSVRow.Organism.A_niger_BO1:
+                            if (prot.startsWith("JGI")) {
+                                prot = prot.substring(3, prot.length()-3)+"-mRNA";
+                            }
+                            break;
+                        case CSVRow.Organism.A_oryzae_RIB40:
+                            if (prot.startsWith("AO")) {
+                                prot = prot.substring(0, prot.length()-3);
+                            }
+                            break;
+                        case CSVRow.Organism.A_fumigatus_Z5:
+                            if (prot.startsWith("Y6")) {
+
+                            }
+                        default:
+                            prot = null;
+                            break;
+                    }
+                    if (prot != null && map.containsKey(prot)) {
+                        row = map.get(prot);
+                        row.addExpr(rs.getString(3), Double.parseDouble(rs.getString(4)));
+                    }else{
+                        asdf.write(prot+"\n");
+//                        System.out.println(prot);
+                    }
                 }
                 System.out.println("Done inserting expression values");
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
