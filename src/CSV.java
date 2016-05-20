@@ -1,13 +1,16 @@
 import javax.swing.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
 public class CSV {
+
     public CSV(OTDatabase database) {
+
+        Mapping_from_fasta test_Mapping_from_fasta = new Mapping_from_fasta();
+        System.out.println(Mapping_from_fasta.makeMapping("/home/aj/Dropbox/dnAJ/Novel_Enzymes/Data/Mapping/Aspergillus_fumigatus_z5.ASM102932v1.31.pep.all.fa"));
+
         JFileChooser fc = new JFileChooser();
         if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
@@ -123,7 +126,7 @@ public class CSV {
                             break;
                         case CSVRow.Organism.A_fumigatus_Z5:
                             if (prot.startsWith("Y6")) {
-
+//                                fixme probeid naar protid omzetten
                             }
                         default:
                             prot = null;
