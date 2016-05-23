@@ -2,14 +2,25 @@ import javax.swing.*;
 import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class CSV {
 
     public CSV(OTDatabase database) {
+        String x[][];
 
-        Mapping_from_fasta test_Mapping_from_fasta = new Mapping_from_fasta();
-        System.out.println(Mapping_from_fasta.makeMapping("/home/aj/Dropbox/dnAJ/Novel_Enzymes/Data/Mapping/Aspergillus_fumigatus_z5.ASM102932v1.31.pep.all.fa"));
+        Mapping test = new Mapping();
+        x = test.makeMapping("/home/aj/Dropbox/dnAJ/Novel_Enzymes/Data/Mapping/Aspergillus_fumigatus_z5.ASM102932v1.31.pep.all.fa");
+
+        System.out.println(x[0][0]);
+        System.out.println(x[0][1]);
+        System.out.println("");
+        System.out.println(x[1][0]);
+        System.out.println(x[1][1]);
+        System.out.println("");
+        System.out.println(x[2][0]);
+        System.out.println(x[2][1]);
 
         JFileChooser fc = new JFileChooser();
         if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
