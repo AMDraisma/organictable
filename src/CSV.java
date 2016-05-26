@@ -8,14 +8,6 @@ import java.util.HashMap;
 public class CSV {
 
     public CSV(OTDatabase database) {
-        String prot;
-
-        Mapping mapper = new Mapping();
-        mapper.makeMapping("C:\\Users\\dnAJ\\Dropbox\\dnAJ\\Novel_Enzymes\\Data\\Mapping\\Aspergillus_fumigatus_z5.ASM102932v1.31.pep.all.fa");
-        prot = mapper.giveProt("Y699_09531");
-
-        System.out.println(prot);
-
 
         JFileChooser fc = new JFileChooser();
         if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
