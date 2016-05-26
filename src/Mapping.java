@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class Mapping {
@@ -51,9 +52,16 @@ public class Mapping {
         return map;
     }
 
-    public static String geneToProt(String geneID){
+    public String giveProt (String probeID){
+        String result = null;
 
-        return;
+        for (int i = 0; i < map.length; i++) {
+
+            if (map[i][0].equals(probeID))
+                result = map[i][1];
+        }
+
+        return result;
     }
 
 }
