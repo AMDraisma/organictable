@@ -97,7 +97,7 @@ public class CSV {
                 }
                 System.out.println("Done processing ortholog groups");
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace();s
             }
         }
         q = "SELECT orgaccession, protaccession, substrate, expression from Expression;";
