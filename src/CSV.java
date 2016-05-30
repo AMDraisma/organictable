@@ -1,13 +1,14 @@
 import javax.swing.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class CSV {
+
     public CSV(OTDatabase database) {
+
         JFileChooser fc = new JFileChooser();
         if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
@@ -123,7 +124,7 @@ public class CSV {
                             break;
                         case CSVRow.Organism.A_fumigatus_Z5:
                             if (prot.startsWith("Y6")) {
-
+//                                fixme probeid naar protid omzetten
                             }
                         default:
                             prot = null;
