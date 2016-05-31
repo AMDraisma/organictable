@@ -3,17 +3,15 @@
  */
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 
 
 public class Mapping {
     String[][] map = null;
 
     public String[][] makeMapping (String path){
-
+        double t = System.currentTimeMillis();
         try{
             BufferedReader br = new BufferedReader(new FileReader(path));
             String aLine;
@@ -44,6 +42,7 @@ public class Mapping {
                 }
             }
             br.close();
+            System.out.println("Building fumigatus gene<->prot map took "+ (System.currentTimeMillis() - t) +" millis");
 
         }catch(IOException e){
             System.out.println("Exception thrown  :" + e);

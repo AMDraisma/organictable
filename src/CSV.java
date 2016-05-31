@@ -2,13 +2,10 @@ import javax.swing.*;
 import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class CSV {
-
     public CSV(OTDatabase database) {
-
         JFileChooser fc = new JFileChooser();
         if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
@@ -29,6 +26,11 @@ public class CSV {
     }
 
     public void writeCSV (File file, OTDatabase database) {
+        Long time;
+        BlastParser blastParser = new BlastParser("/home/crude/Dropbox/dnAJ/Novel_Enzymes/Data/afum-blast.txt");
+        Mapping mapping = new Mapping();
+        mapping.makeMapping("/home/crude/Dropbox/dnAJ/Novel_Enzymes/Data/fastas/Aspergillus_fumigatus_z5.ASM102932v1.31.pep.all.fa");
+        time = System.currentTimeMillis();
         String q = "SELECT Prot.protaccession, " +
                 "Organism_has_prot.orgaccession, " +
                 "Signalp.sig, " +
@@ -56,11 +58,12 @@ public class CSV {
                     map.put(prot, row);
                     proteins++;
                 }
-                System.out.println("Found "+proteins+" proteins");
+                System.out.println("Found "+proteins+" proteins (took "+ (System.currentTimeMillis() - time) +" millis)");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+        time = System.currentTimeMillis();
         q = "SELECT Prot.protaccession, " +
             "group_concat(Cluster.protaccession separator ':') " +
             "from Prot " +
@@ -82,7 +85,7 @@ public class CSV {
                         }
                     }
                 }
-                System.out.println("Done processing ortholog groups");
+                System.out.println("Done processing ortholog groups (took "+ (System.currentTimeMillis() - time) +" millis)");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -93,8 +96,7 @@ public class CSV {
         if (null != rs) {
             try {
                 FileWriter asdf = new FileWriter(new File("/home/crude/asd.txt"));
-                int c = rs.getMetaData().getColumnCount();
-//                System.out.println(String.format("Found %d expression values", c));
+
                 while (rs.next()) {
                     org = rs.getString(1);
                     prot = rs.getString(2);
@@ -124,14 +126,17 @@ public class CSV {
                             break;
                         case CSVRow.Organism.A_fumigatus_Z5:
                             if (prot.startsWith("Y6")) {
-//                                fixme probeid naar protid omzetten
+                                prot = mapping.giveProt(prot);
+                                prot = blastParser.Z5ToA(prot);
                             }
+                            break;
                         default:
                             prot = null;
                             break;
                     }
                     if (prot != null && map.containsKey(prot)) {
                         row = map.get(prot);
+                        System.out.println(rs.getDouble(4) + "");
                         row.addExpr(rs.getString(3), Double.parseDouble(rs.getString(4)));
                     }else{
                         asdf.write(prot+"\n");

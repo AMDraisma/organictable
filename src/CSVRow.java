@@ -76,23 +76,23 @@ public class CSVRow {
         public static final int Nocarbon = 8;
 
         public static int parseString(String s) {
-            if (Objects.equals(s, "Glucose"))
+            if (Objects.equals(s.toLowerCase(), "glucose"))
                 return Glucose;
-            if (Objects.equals(s, "Xylose"))
+            if (Objects.equals(s.toLowerCase(), "xylose"))
                 return Xylose;
-            if (Objects.equals(s, "Maltose"))
+            if (Objects.equals(s.toLowerCase(), "maltose"))
                 return Maltose;
-            if (Objects.equals(s, "Glycerol"))
+            if (Objects.equals(s.toLowerCase(), "glycerol"))
                 return Glycerol;
-            if (Objects.equals(s, "Sucrose"))
+            if (Objects.equals(s.toLowerCase(), "sucrose"))
                 return Sucrose;
-            if (Objects.equals(s, "Xylan"))
+            if (Objects.equals(s.toLowerCase(), "xylan"))
                 return Xylan;
-            if (Objects.equals(s, "Avicel"))
+            if (Objects.equals(s.toLowerCase(), "avicel"))
                 return Avicel;
-            if (Objects.equals(s, "Rice_Straw"))
+            if (Objects.equals(s.toLowerCase(), "rice_straw"))
                 return Ricestraw;
-            if (Objects.equals(s, "No_carbon"))
+            if (Objects.equals(s.toLowerCase(), "no_carbon"))
                 return Nocarbon;
             System.out.println(s);
             return -1;
