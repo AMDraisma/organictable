@@ -58,7 +58,7 @@ public class CSVRow {
                 return A_nidulans_FGSC_A4;
             if (Objects.equals(s, "A_fumigatus_Z5"))
                 return A_fumigatus_Z5;
-            System.out.println(s);
+            System.out.println("Could not parse organism: "+s);
             return -1;
         }
     }
@@ -94,7 +94,7 @@ public class CSVRow {
                 return Ricestraw;
             if (Objects.equals(s.toLowerCase(), "no_carbon"))
                 return Nocarbon;
-            System.out.println(s);
+            System.out.println("Could not parse substrate: "+s);
             return -1;
         }
     }
@@ -118,15 +118,15 @@ public class CSVRow {
         this.pfamext = pfamext;
         orths = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            this.orths.add(new ArrayList<>());
+            this.orths.add(new ArrayList<String>());
         }
         exprs = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            this.exprs.add(new ArrayList<>());
+            this.exprs.add(new ArrayList<Double>());
         }
         proteomics = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            this.proteomics.add(new ArrayList<>());
+            this.proteomics.add(new ArrayList<Double>());
         }
     }
 
@@ -182,8 +182,8 @@ public class CSVRow {
 
     public String getOrths() {
         StringBuilder sb = new StringBuilder();
-        String prefix = "";
         for (int i = 0; i < 9; i++) {
+            String prefix = "";
             if (this.orths.get(i).size() > 0) {
                 for (String prot : this.orths.get(i)) {
                     sb.append(prefix);
@@ -211,9 +211,9 @@ public class CSVRow {
                 sumsbp += value;
             }
             sb.append(sumsbp / this.proteomics.get(0).size());
-            sb.append(',');
+            sb.append('\t');
         }else{
-            sb.append("NA,");
+            sb.append("NA\t");
         }
         if (this.proteomics.get(1).size() > 0) {
             double sumwb = 0;
@@ -234,10 +234,11 @@ public class CSVRow {
 
     public String getExprs(boolean one, boolean average) {
         StringBuilder sb = new StringBuilder();
-        String prefix = "";
         Double sum;
+        String prefix = "";
         Double n;
         for (int i = 0; i < 9; i++) {
+            prefix = "";
             if (this.exprs.get(i).size() > 0) {
                 if (one) {
                     sb.append(this.exprs.get(i).get(0));
@@ -270,6 +271,6 @@ public class CSVRow {
 
     @Override
     public String toString () {
-        return protaccession+"\t"+orgaccession+"\t"+getOrths()+"\t"+sig+"\t"+conf+"\t"+pfam+"\t"+pfamext+"\t"+getExprs(true, true)+"\n";
+        return protaccession+"\t"+orgaccession+"\t"+getOrths()+"\t"+sig+"\t"+conf+"\t"+pfam+"\t"+pfamext+"\t"+getProteomics()+"\t"+getExprs(true, true)+"\n";
     }
 }

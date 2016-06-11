@@ -95,7 +95,7 @@ public class CSV {
 
         if (null != rs) {
             try {
-                FileWriter asdf = new FileWriter(new File("/home/crude/asd.txt"));
+//                FileWriter asdf = new FileWriter(new File("/home/crude/asd.txt"));
 
                 while (rs.next()) {
                     org = rs.getString(1);
@@ -136,10 +136,10 @@ public class CSV {
                     }
                     if (prot != null && map.containsKey(prot)) {
                         row = map.get(prot);
-                        System.out.println(rs.getDouble(4) + "");
+//                        System.out.println(rs.getDouble(4) + "");
                         row.addExpr(rs.getString(3), Double.parseDouble(rs.getString(4)));
                     }else{
-                        asdf.write(prot+"\n");
+//                        asdf.write(prot+"\n");
 //                        System.out.println(prot);
                     }
                 }
@@ -147,6 +147,20 @@ public class CSV {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        q = "SELECT protaccession, substrate, data from proteomics where type = 'Area';";
+        rs = database.ExecuteQuery(q);
+        try {
+            if (null != rs) {
+                while (rs.next()) {
+                    prot = rs.getString(1);
+                    if (map.containsKey(prot)) {
+                        map.get(prot).addProteomics(rs.getString(2), rs.getDouble(3));
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
         try {
             int t = proteins / 10;
