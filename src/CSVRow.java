@@ -19,6 +19,8 @@ public class CSVRow {
             "SignalP conf\t" +
             "Pfam-A family\t" +
             "Pfam-A family description\t" +
+            "Sugar beet pulp area\t" +
+            "Wheat bran area\t"+
             "Glucose\t" +
             "Xylose\t" +
             "Maltose\t" +
@@ -50,10 +52,8 @@ public class CSVRow {
                 return A_niger_BO1;
             if (Objects.equals(s, "A_niger_ATCC_1015"))
                 return A_niger_BO1;
-//                return A_niger_ATCC_1015;
             if (Objects.equals(s, "A_oryzae_A1560"))
                 return A_oryzae_RIB40;
-//                return A_oryzae_A1560;
             if (Objects.equals(s, "A_nidulans_FGSC_A4"))
                 return A_nidulans_FGSC_A4;
             if (Objects.equals(s, "A_fumigatus_Z5"))
@@ -107,6 +107,7 @@ public class CSVRow {
     private String pfam;
     private String pfamext;
     private ArrayList<ArrayList<Double>> exprs;
+    private ArrayList<ArrayList<Double>> proteomics;
 
     public CSVRow(String protaccession, String orgaccession, String sig, String conf, String pfam, String pfamext) {
         this.protaccession = protaccession;
@@ -117,16 +118,28 @@ public class CSVRow {
         this.pfamext = pfamext;
         orths = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            this.orths.add(new ArrayList<String>());
+            this.orths.add(new ArrayList<>());
         }
         exprs = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            this.exprs.add(new ArrayList<Double>());
+            this.exprs.add(new ArrayList<>());
+        }
+        proteomics = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            this.proteomics.add(new ArrayList<>());
         }
     }
 
     public void addExpr(int substrate, Double value) {
         exprs.get(substrate).add(value);
+    }
+
+    public void addProteomics(String substrate, Double value) {
+        if (Objects.equals(substrate, "SBP")) {
+            this.proteomics.get(0).add(value);
+        }else if (Objects.equals(substrate, "WB")) {
+            this.proteomics.get(1).add(value);
+        }
     }
 
     public void addExpr(String substrate, Double value) {
@@ -186,6 +199,31 @@ public class CSVRow {
             sb.append("\t");
         }
         sb.deleteCharAt(sb.length() - 1);
+
+        return sb.toString();
+    }
+
+    public String getProteomics() {
+        StringBuilder sb = new StringBuilder();
+        if (this.proteomics.get(0).size() > 0) {
+            double sumsbp = 0;
+            for (double value : this.proteomics.get(0)) {
+                sumsbp += value;
+            }
+            sb.append(sumsbp / this.proteomics.get(0).size());
+            sb.append(',');
+        }else{
+            sb.append("NA,");
+        }
+        if (this.proteomics.get(1).size() > 0) {
+            double sumwb = 0;
+            for (double value : this.proteomics.get(1)) {
+                sumwb += value;
+            }
+            sb.append(sumwb / this.proteomics.get(0).size());
+        }else{
+            sb.append("NA");
+        }
 
         return sb.toString();
     }
