@@ -5,8 +5,27 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 public class CSV {
+
+    String blastfile;
+    String z5fastafile;
+
     public CSV(OTDatabase database) {
         JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Choose fumigatus Z5 <-> fumigatus A1163 blast result location");
+        if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            blastfile = fc.getSelectedFile().getAbsolutePath();
+        }else{
+            return;
+        }
+        fc = new JFileChooser();
+        fc.setDialogTitle("Choose fumigatus Z5 fasta file location");
+        if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            z5fastafile = fc.getSelectedFile().getAbsolutePath();
+        }else{
+            return;
+        }
+        fc = new JFileChooser();
+        fc.setDialogTitle("Choose CSV save location");
         if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             if (!file.exists()) {
@@ -20,16 +39,15 @@ public class CSV {
                 writeCSV(file, database);
             } else {
                 System.out.print("Can't write file");
-                return;
             }
         }
     }
 
     public void writeCSV (File file, OTDatabase database) {
         Long time;
-        BlastParser blastParser = new BlastParser("/home/crude/Dropbox/dnAJ/Novel_Enzymes/Data/afum-blast.txt");
+        BlastParser blastParser = new BlastParser(blastfile);
         Mapping mapping = new Mapping();
-        mapping.makeMapping("/home/crude/Dropbox/dnAJ/Novel_Enzymes/Data/fastas/Aspergillus_fumigatus_z5.ASM102932v1.31.pep.all.fa");
+        mapping.makeMapping(z5fastafile);
         time = System.currentTimeMillis();
         String q = "SELECT Prot.protaccession, " +
                 "Organism_has_prot.orgaccession, " +
@@ -136,11 +154,7 @@ public class CSV {
                     }
                     if (prot != null && map.containsKey(prot)) {
                         row = map.get(prot);
-//                        System.out.println(rs.getDouble(4) + "");
                         row.addExpr(rs.getString(3), Double.parseDouble(rs.getString(4)));
-                    }else{
-//                        asdf.write(prot+"\n");
-//                        System.out.println(prot);
                     }
                 }
                 System.out.println("Done inserting expression values");
