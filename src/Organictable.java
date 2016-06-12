@@ -15,9 +15,8 @@ public class   Organictable extends JFrame {
     }
 
     public Organictable() {
-        otDatabase = new OTDatabase();
+        otDatabase = new OTDatabase(this);
         this.setSize(600,300);
-        this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         filepanel = new FilePanel();
         this.setContentPane(filepanel);

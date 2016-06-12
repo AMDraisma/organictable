@@ -1,10 +1,19 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Collections;
 
 /**
  * Klasse voor handlen van de database connectie en invoer/uitvoer
  */
-public class OTDatabase {
+public class OTDatabase extends JFrame implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        connect();
+    }
 
     enum DATA_TYPES {
         DATA_TYPE_INT,
@@ -13,14 +22,50 @@ public class OTDatabase {
 
     Connection databaseConnection;
 
-    public OTDatabase() {
+    JTextField host = new JTextField();
+    JTextField db = new JTextField();
+    JTextField user = new JTextField();
+    JTextField pass = new JTextField();
+    JButton cbutton = new JButton("Connect");
+
+    JFrame mainWindow;
+
+    public OTDatabase(JFrame mainWindow) {
+        this.mainWindow = mainWindow;
+
+        this.setVisible(true);
+        this.setSize(300, 200);
+        this.setLayout(new GridLayout(5, 2));
+
+        this.add(new JLabel("host:port"));
+        this.add(host);
+        this.add(new JLabel("database"));
+        this.add(db);
+        this.add(new JLabel("Username"));
+        this.add(user);
+        this.add(new JLabel("Password"));
+        this.add(pass);
+        this.add(cbutton);
+        cbutton.addActionListener(this);
+
+        this.pack();
+
+        this.setLocationRelativeTo(null);
+
+        this.setTitle("SQL details");
+
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private void connect() {
         try {
-            // who needs security
             databaseConnection = DriverManager.getConnection(
-                    "jdbc:mysql://croil.net:3306/novelenzymes?useServerPrepStmts=false&rewriteBatchedStatements=true",
-                    "dnaj",
-                    "1234" // same as my root password
+                    "jdbc:mysql://"+host.getText()+"/"+db.getText()+"?useServerPrepStmts=false&rewriteBatchedStatements=true",
+                    user.getText(),
+                    pass.getText()
             );
+            mainWindow.setVisible(true);
+            this.setVisible(false);
         }catch (SQLException e) {
             e.printStackTrace();
         }
